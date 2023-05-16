@@ -1,9 +1,10 @@
 import MainLayout from './components/layouts';
+import TodoList from './components/TodoList';
 
 const App = () => {
   return (
     <MainLayout>
-      <div>content</div>
+      <TodoList />
     </MainLayout>
   );
 };

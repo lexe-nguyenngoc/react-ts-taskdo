@@ -1,0 +1,44 @@
+.header {
+  width: 100%;
+  padding: 25px 50px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+
+  &__name {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 3rem;
+
+    color: var(--heading-color);
+  }
+
+  &__task {
+    margin-top: -6px;
+    font-size: 2.4rem;
+    font-weight: 500;
+    line-height: 3rem;
+
+    color: var(--red-color);
+  }
+}
+
+.heading {
+  text-align: center;
+  font-size: 6.4rem;
+  line-height: 7.8rem;
+
+  color: var(--heading-color);
+}
+
+.action {
+  display: flex;
+}
+
+.button {
+  margin: auto 0 auto auto;
+}

@@ -1,5 +1,8 @@
 import { ReactComponent as CheckboxCheckedIcon } from '../../../assets/icons/checkbox-checked.svg';
 import { ReactComponent as CheckboxIcon } from '../../../assets/icons/checkbox.svg';
+import { classnames } from '../../../utils';
+
+import styles from './Checkbox.module.scss';
 
 export interface CheckboxProps {
   checked: boolean;
@@ -10,8 +13,8 @@ export interface CheckboxProps {
 
 const Checkbox = ({ checked, id, className, onChange }: CheckboxProps) => {
   return (
-    <div onClick={onChange} className={className}>
-      <input id={id} onChange={onChange} type='checkbox' hidden />
+    <div className={classnames(className, styles.checkbox)} onClick={onChange}>
+      <input id={id} type='checkbox' hidden />
       {checked ? <CheckboxCheckedIcon /> : <CheckboxIcon />}
     </div>
   );

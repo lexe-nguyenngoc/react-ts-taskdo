@@ -4,17 +4,33 @@ import { Button, Checkbox } from '../../common';
 
 import styles from './TodoItem.module.scss';
 
-export interface TodoItemProps {
-  item: { id: string; label: string; isDone: boolean };
+export interface ITodoItem {
+  id: string;
+  label: string;
+  isDone: boolean;
 }
 
-const TodoItem = ({ item }: TodoItemProps) => {
+interface TodoItemProps {
+  item: ITodoItem;
+  onChange: (item: ITodoItem) => void;
+  onDelete: (item: ITodoItem) => void;
+}
+
+const TodoItem = ({ item, onChange, onDelete }: TodoItemProps) => {
+  const handleChange = () => {
+    onChange(item);
+  };
+
+  const handleDelete = () => {
+    onDelete(item);
+  };
+
   return (
     <div className={styles.todo}>
-      <Button>
+      <Button onClick={handleDelete}>
         <WasteBinIcon />
       </Button>
-      <Checkbox className={styles.checkbox} id={item.id} checked={item.isDone} onChange={() => {}} />
+      <Checkbox className={styles.checkbox} id={item.id} checked={item.isDone} onChange={handleChange} />
       <label htmlFor={item.id}>{item.label}</label>
     </div>
   );

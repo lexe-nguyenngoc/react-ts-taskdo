@@ -20,9 +20,11 @@ export interface TodoAction {
 const todoReducer = (state: ITodoItem[], action: TodoAction) => {
   const { type, payload } = action;
 
+  let newState;
+
   switch (type) {
     case TodoActionKind.CHANGE_STATUS:
-      return state.map((item) => {
+      newState = state.map((item) => {
         const newItem = { ...item };
         if (newItem.id === payload.id) {
           newItem.isDone = !newItem.isDone;
@@ -30,17 +32,27 @@ const todoReducer = (state: ITodoItem[], action: TodoAction) => {
 
         return newItem;
       });
+      break;
 
     case TodoActionKind.DELETE_ITEM:
-      return state.filter((item) => item.id !== payload.id);
+      newState = state.filter((item) => item.id !== payload.id);
+      break;
 
     case TodoActionKind.ADD_ITEM:
-      return [payload, ...state];
+      newState = [payload, ...state];
+      break;
 
     default:
-      return state;
+      newState = state;
+      break;
   }
+
+  localStorage.setItem('todos', JSON.stringify(newState));
+  return newState;
 };
+
+const todosString = localStorage.getItem('todos');
+const todosDefault: ITodoItem[] = JSON.parse(todosString || '[]');
 
 interface ITodoContext {
   data: ITodoItem[];
@@ -50,14 +62,14 @@ interface ITodoContext {
 }
 
 const TodoContext = createContext<ITodoContext>({
-  data: [],
+  data: todosDefault,
   onChangeStatusTodo: (item: ITodoItem) => {},
   onDeleteTodo: (item: ITodoItem) => {},
   onAddTodo: (item: string) => {}
 });
 
 export const TodoProvider = ({ children }: TodoProviderProps) => {
-  const [state, dispatch] = useReducer(todoReducer, []);
+  const [state, dispatch] = useReducer(todoReducer, todosDefault);
 
   const handleChangeStatus = (item: ITodoItem) => {
     dispatch({

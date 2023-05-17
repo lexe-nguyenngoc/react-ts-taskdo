@@ -32,20 +32,23 @@ const defaultTodoState: ITodoItem[] = [
 
 enum TodoActionKind {
   CHANGE_STATUS = 'CHANGE_STATUS',
-  DELETE_ITEM = 'DELETE_ITEM'
+  DELETE_ITEM = 'DELETE_ITEM',
+  ADD_ITEM = 'ADD_ITEM'
 }
 
 export interface TodoAction {
   type: TodoActionKind;
-  payload: Partial<ITodoItem>;
+  payload: ITodoItem;
 }
 
 const todoReducer = (state: ITodoItem[], action: TodoAction) => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case TodoActionKind.CHANGE_STATUS:
       return state.map((item) => {
         const newItem = { ...item };
-        if (newItem.id === action.payload.id) {
+        if (newItem.id === payload.id) {
           newItem.isDone = !newItem.isDone;
         }
 
@@ -53,7 +56,10 @@ const todoReducer = (state: ITodoItem[], action: TodoAction) => {
       });
 
     case TodoActionKind.DELETE_ITEM:
-      return state.filter((item) => item.id !== action.payload.id);
+      return state.filter((item) => item.id !== payload.id);
+
+    case TodoActionKind.ADD_ITEM:
+      return [payload, ...state];
 
     default:
       return state;
@@ -77,9 +83,22 @@ const TodoList = () => {
     });
   };
 
+  const handleAddItem = (label: string) => {
+    const newItem: ITodoItem = {
+      id: uid(),
+      label,
+      isDone: false
+    };
+
+    dispatch({
+      type: TodoActionKind.ADD_ITEM,
+      payload: newItem
+    });
+  };
+
   return (
     <section className={styles.wrapper}>
-      <TodoInput />
+      <TodoInput onSubmit={handleAddItem} />
 
       <ul className={styles.list}>
         {state.map((todo) => (

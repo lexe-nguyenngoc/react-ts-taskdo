@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-.icon {
+.button {
   width: 30px;
   height: 30px;
 
@@ -24,4 +24,16 @@
   font-weight: 700;
 
   color: var(--primary-color);
+  background-color: transparent;
+
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #ccc;
+  transition: all ease-in 0.2s;
+  padding: 0 2px;
+
+  &:focus {
+    border-bottom-color: var(--primary-color);
+    padding: 0 6px;
+  }
 }
